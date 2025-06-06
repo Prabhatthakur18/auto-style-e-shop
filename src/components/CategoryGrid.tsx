@@ -40,12 +40,12 @@ const CategoryGrid: React.FC<CategoryGridProps> = ({ categories }) => {
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
       {categories.map(category => (
         <Link key={category.id} to={`/category/${category.id}`}>
-          <Card className="hover:shadow-lg transition-all duration-300 hover:scale-105 h-full">
+          <Card className="hover:shadow-lg transition-all duration-300 hover:scale-105 h-full border border-muted bg-white hover:border-brand-orange group">
             <CardContent className="p-6 text-center">
-              <div className="mb-4 text-primary flex justify-center">
+              <div className="mb-4 text-primary flex justify-center group-hover:text-brand-orange transition-colors duration-300">
                 {getCategoryIcon(category.id)}
               </div>
-              <h3 className="font-semibold text-sm mb-2">{category.name}</h3>
+              <h3 className="font-semibold text-sm mb-2 group-hover:text-brand-orange">{category.name}</h3>
               <p className="text-xs text-muted-foreground line-clamp-2">
                 {category.description}
               </p>

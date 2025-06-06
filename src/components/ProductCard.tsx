@@ -11,7 +11,7 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col">
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col border-muted hover:border-brand-orange">
       <Link to={`/product/${product.id}`} className="flex-grow flex flex-col">
         <AspectRatio ratio={4/3}>
           <img 
@@ -25,7 +25,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {[...Array(5)].map((_, i) => (
               <svg 
                 key={i} 
-                className={`w-4 h-4 ${i < Math.round(product.rating || 0) ? 'text-yellow-400' : 'text-gray-300'}`} 
+                className={`w-4 h-4 ${i < Math.round(product.rating || 0) ? 'text-brand-yellow' : 'text-gray-300'}`} 
                 fill="currentColor" 
                 viewBox="0 0 20 20"
               >
@@ -37,7 +37,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             </span>
           </div>
           <h3 className="font-medium text-lg line-clamp-2 mb-2">{product.name}</h3>
-          <p className="font-bold text-primary">${product.price.toFixed(2)}</p>
+          <p className="font-bold text-brand-orange">${product.price.toFixed(2)}</p>
           {!product.inStock && (
             <div className="mt-2 text-sm text-red-500">Out of stock</div>
           )}

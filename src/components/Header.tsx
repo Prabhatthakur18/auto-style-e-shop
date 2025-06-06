@@ -25,7 +25,7 @@ const Header = () => {
           {/* Logo */}
           <div className="flex items-center">
             <Link to="/" className="text-2xl font-bold text-primary">
-              AutoShop
+              Autoform
             </Link>
           </div>
 
@@ -44,16 +44,7 @@ const Header = () => {
           </div>
 
           {/* Actions */}
-          <div className="flex items-center space-x-4">
-            <div className="hidden md:block">
-              <Button variant="ghost" asChild>
-                <Link to="/login">Login</Link>
-              </Button>
-              <Button variant="outline" asChild>
-                <Link to="/register">Register</Link>
-              </Button>
-            </div>
-            
+          <div className="flex items-center space-x-4">            
             {/* Cart */}
             <NavCart />
             
@@ -71,7 +62,7 @@ const Header = () => {
         <nav className="hidden md:flex items-center justify-between py-4">
           <ul className="flex space-x-6">
             <li>
-              <Link to="/" className="text-gray-700 hover:text-primary font-medium">
+              <Link to="/" className="text-gray-700 hover:text-primary font-medium category-link">
                 Home
               </Link>
             </li>
@@ -79,7 +70,7 @@ const Header = () => {
               <li key={category.id} className="relative group">
                 <Link 
                   to={`/category/${category.id}`} 
-                  className="text-gray-700 hover:text-primary font-medium"
+                  className="text-gray-700 hover:text-primary font-medium category-link"
                 >
                   {category.name}
                 </Link>
@@ -91,7 +82,7 @@ const Header = () => {
                       <Link 
                         key={subCategory.id}
                         to={`/category/${subCategory.id}`}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-accent hover:text-primary"
                       >
                         {subCategory.name}
                       </Link>
@@ -101,16 +92,11 @@ const Header = () => {
               </li>
             ))}
             <li>
-              <Link to="/contact" className="text-gray-700 hover:text-primary font-medium">
+              <Link to="/contact" className="text-gray-700 hover:text-primary font-medium category-link">
                 Contact
               </Link>
             </li>
           </ul>
-          
-          {/* Special Offers */}
-          <Link to="/offers" className="text-primary font-medium">
-            Special Offers
-          </Link>
         </nav>
 
         {/* Mobile Menu */}
@@ -159,24 +145,6 @@ const Header = () => {
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Contact
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/login"
-                  className="block py-2 text-gray-700 hover:text-primary font-medium"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Login
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  to="/register"
-                  className="block py-2 text-gray-700 hover:text-primary font-medium"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Register
                 </Link>
               </li>
             </ul>
