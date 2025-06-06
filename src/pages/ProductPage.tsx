@@ -1,19 +1,32 @@
 
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getProduct } from '@/data/mockData';
+import { getProduct, getRelatedProducts } from '@/data/mockData';
 import { categories } from '@/data/mockData';
-import { ChevronRight, ShoppingCart } from 'lucide-react';
+import { ChevronRight, ShoppingCart, Heart, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from '@/hooks/use-toast';
+import { useCart } from '@/context/CartContext';
+import ProductCard from '@/components/ProductCard';
+import { 
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const ProductPage = () => {
   const { productId } = useParams<{ productId: string }>();
   const { toast } = useToast();
+  const { addToCart } = useCart();
   const product = productId ? getProduct(productId) : undefined;
   
   const [mainImage, setMainImage] = useState(product?.images[0] || "/placeholder.svg");
+  const [quantity, setQuantity] = useState(1);
+  
+  const relatedProducts = productId ? getRelatedProducts(productId, 4) : [];
   
   if (!product) {
     return <div className="text-center py-12">Product not found</div>;
@@ -33,6 +46,14 @@ const ProductPage = () => {
       description: "We'll get back to you soon about this product.",
     });
   };
+
+  const handleAddToCart = () => {
+    addToCart(product.id, quantity);
+  };
+
+  // Handle quantity change
+  const incrementQuantity = () => setQuantity(prev => prev + 1);
+  const decrementQuantity = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
 
   return (
     <div className="space-y-8">
@@ -95,20 +116,81 @@ const ProductPage = () => {
 
         {/* Product Info */}
         <div>
-          <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
-          <p className="text-2xl font-bold text-primary mb-6">${product.price.toFixed(2)}</p>
+          <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
+          
+          {/* Rating */}
+          <div className="flex items-center space-x-1 mb-4">
+            {[...Array(5)].map((_, i) => (
+              <svg 
+                key={i} 
+                className={`w-5 h-5 ${i < Math.round(product.rating || 0) ? 'text-yellow-400' : 'text-gray-300'}`}
+                fill="currentColor" 
+                viewBox="0 0 20 20"
+              >
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            ))}
+            <span className="text-sm text-muted-foreground">
+              {product.rating?.toFixed(1)} ({product.reviews?.length || 0} reviews)
+            </span>
+          </div>
+          
+          <p className="text-2xl font-bold text-primary mb-4">${product.price.toFixed(2)}</p>
           
           <div className="prose mb-6">
             <p>{product.description}</p>
           </div>
 
+          {/* Stock status */}
+          <div className="mb-6">
+            <span className={`px-2 py-1 text-sm rounded-full ${product.inStock ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+              {product.inStock ? 'In Stock' : 'Out of Stock'}
+            </span>
+          </div>
+
+          {/* Quantity selector */}
+          <div className="flex items-center mb-6">
+            <span className="text-sm font-medium mr-3">Quantity:</span>
+            <div className="flex items-center border rounded-md">
+              <button 
+                onClick={decrementQuantity}
+                className="px-3 py-1 border-r"
+                disabled={quantity <= 1}
+              >
+                -
+              </button>
+              <span className="px-4 py-1">{quantity}</span>
+              <button 
+                onClick={incrementQuantity}
+                className="px-3 py-1 border-l"
+              >
+                +
+              </button>
+            </div>
+          </div>
+
           <div className="space-y-6">
             <div className="flex space-x-4">
-              <Button className="flex-1">
+              <Button 
+                className="flex-1" 
+                onClick={handleAddToCart}
+                disabled={!product.inStock}
+              >
                 <ShoppingCart className="mr-2 h-4 w-4" />
                 Add to Cart
               </Button>
               <Button className="flex-1" variant="secondary">Buy Now</Button>
+            </div>
+            
+            <div className="flex space-x-4">
+              <Button variant="outline" className="flex-1">
+                <Heart className="mr-2 h-4 w-4" />
+                Add to Wishlist
+              </Button>
+              <Button variant="outline" className="flex-1">
+                <Share2 className="mr-2 h-4 w-4" />
+                Share
+              </Button>
             </div>
             
             <Button onClick={handleEnquire} variant="outline" className="w-full">
@@ -164,38 +246,54 @@ const ProductPage = () => {
               <h3 className="text-xl font-bold">Customer Reviews</h3>
               <Button>Write a Review</Button>
             </div>
-            <div className="divide-y">
-              <div className="py-4">
-                <div className="flex items-center space-x-1 mb-2">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-                <h4 className="font-medium">Amazing product</h4>
-                <p className="text-muted-foreground">By John D. on May 15, 2023</p>
-                <p className="mt-2">This product exceeded all my expectations. The quality is outstanding!</p>
+            {product.reviews && product.reviews.length > 0 ? (
+              <div className="divide-y">
+                {product.reviews.map((review) => (
+                  <div key={review.id} className="py-4">
+                    <div className="flex items-center space-x-1 mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <svg 
+                          key={i} 
+                          className={`w-5 h-5 ${i < review.rating ? 'text-yellow-400' : 'text-gray-300'}`} 
+                          fill="currentColor" 
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                      ))}
+                    </div>
+                    <h4 className="font-medium">{review.userName}</h4>
+                    <p className="text-muted-foreground">{review.date}</p>
+                    <p className="mt-2">{review.comment}</p>
+                  </div>
+                ))}
               </div>
-              <div className="py-4">
-                <div className="flex items-center space-x-1 mb-2">
-                  {[...Array(4)].map((_, i) => (
-                    <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                  <svg className="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                </div>
-                <h4 className="font-medium">Good value</h4>
-                <p className="text-muted-foreground">By Sarah M. on April 3, 2023</p>
-                <p className="mt-2">Good quality for the price. Installation was a bit tricky.</p>
+            ) : (
+              <div className="text-center py-8">
+                <p>No reviews yet. Be the first to review this product!</p>
               </div>
-            </div>
+            )}
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Related Products */}
+      {relatedProducts.length > 0 && (
+        <section className="mt-16">
+          <h2 className="text-2xl font-bold mb-6">Related Products</h2>
+          <Carousel className="w-full">
+            <CarouselContent className="-ml-4">
+              {relatedProducts.map((relatedProduct) => (
+                <CarouselItem key={relatedProduct.id} className="pl-4 md:basis-1/2 lg:basis-1/4">
+                  <ProductCard product={relatedProduct} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="-left-4 md:-left-5" />
+            <CarouselNext className="-right-4 md:-right-5" />
+          </Carousel>
+        </section>
+      )}
     </div>
   );
 };
