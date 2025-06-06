@@ -2,25 +2,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Product } from '@/types';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { Button } from './ui/button';
-import { useCart } from '@/context/CartContext';
-import { ShoppingCart } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const { addToCart } = useCart();
-
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    addToCart(product.id, 1);
-  };
-
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-shadow h-full flex flex-col">
       <Link to={`/product/${product.id}`} className="flex-grow flex flex-col">
@@ -47,24 +36,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               {product.rating?.toFixed(1) || "New"}
             </span>
           </div>
-          <h3 className="font-medium text-lg line-clamp-2">{product.name}</h3>
-          <p className="font-bold mt-2 text-primary">${product.price.toFixed(2)}</p>
+          <h3 className="font-medium text-lg line-clamp-2 mb-2">{product.name}</h3>
+          <p className="font-bold text-primary">${product.price.toFixed(2)}</p>
           {!product.inStock && (
             <div className="mt-2 text-sm text-red-500">Out of stock</div>
           )}
         </CardContent>
       </Link>
-      <CardFooter className="p-4 pt-0 flex justify-between">
-        <Button 
-          variant="outline" 
-          size="sm" 
-          onClick={handleAddToCart}
-          disabled={!product.inStock}
-        >
-          <ShoppingCart className="h-4 w-4 mr-1" />
-          Add to Cart
-        </Button>
-      </CardFooter>
     </Card>
   );
 };

@@ -76,6 +76,7 @@ const ProductPage = () => {
           <ProductActions 
             productId={product.id} 
             productName={product.name}
+            price={product.price}
             inStock={product.inStock} 
           />
         </div>

@@ -12,8 +12,8 @@ export const categories: Category[] = [
   { id: "care-fragrance", name: "Care & Fragrance", description: "Keep your car fresh and clean", image: "https://images.unsplash.com/photo-1527359443443-84a48aec73d2?q=80&w=2070&auto=format&fit=crop" },
   
   // Subcategories for Seat Cover
-  { id: "leather-seat-cover", name: "Leather Seat Cover", parentId: "seat-cover", image: "https://images.unsplash.com/photo-1605152322256-ff7c17bedd5b?q=80&w=2070&auto=format&fit=crop" },
-  { id: "fabric-seat-cover", name: "Fabric Seat Cover", parentId: "seat-cover", image: "https://images.unsplash.com/photo-1520050206274-a1ae44613e6d?q=80&w=2070&auto=format&fit=crop" },
+  { id: "4-wheeler-seat-cover", name: "4 Wheeler", parentId: "seat-cover", image: "https://images.unsplash.com/photo-1605152322256-ff7c17bedd5b?q=80&w=2070&auto=format&fit=crop" },
+  { id: "2-wheeler-seat-cover", name: "2 Wheeler", parentId: "seat-cover", image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=2070&auto=format&fit=crop" },
   
   // Subcategories for Mat
   { id: "2d-mat", name: "2D Mat", parentId: "mat", image: "https://images.unsplash.com/photo-1597007466934-2cf33ac13db9?q=80&w=1974&auto=format&fit=crop" },
@@ -110,7 +110,7 @@ const reviews: { [key: string]: Review[] } = {
 export const products: Product[] = [
   {
     id: "1",
-    name: "Premium Leather Seat Cover",
+    name: "Premium Car Leather Seat Cover",
     price: 199.99,
     description: "Luxurious leather seat cover for maximum comfort and style. Made with premium quality leather that is durable and easy to clean. These covers provide excellent protection for your original seats while adding a touch of elegance to your vehicle's interior.",
     images: [
@@ -119,7 +119,7 @@ export const products: Product[] = [
       "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2070&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1542282088-fe8426682b8f?q=80&w=1974&auto=format&fit=crop"
     ],
-    categoryId: "leather-seat-cover",
+    categoryId: "4-wheeler-seat-cover",
     additionalInfo: "Compatible with most sedan models. Easy installation. Made from genuine leather with reinforced stitching for durability.",
     inStock: true,
     rating: 4.8,
@@ -136,11 +136,40 @@ export const products: Product[] = [
       "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?q=80&w=1974&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1552252220-67ac98a8f7d8?q=80&w=2070&auto=format&fit=crop"
     ],
-    categoryId: "fabric-seat-cover",
+    categoryId: "4-wheeler-seat-cover",
     additionalInfo: "Machine washable. UV resistant. Fits most compact and mid-size vehicles. Available in multiple colors.",
     inStock: true,
     rating: 4.5,
     reviews: reviews["2"]
+  },
+  {
+    id: "9",
+    name: "Motorcycle Seat Cover - Sports",
+    price: 49.99,
+    description: "High-quality motorcycle seat cover designed for sports bikes. Waterproof and UV resistant material ensures longevity. Easy to install with secure straps.",
+    images: [
+      "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=2070&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?q=80&w=2070&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1571068316344-75bc76f77890?q=80&w=2070&auto=format&fit=crop"
+    ],
+    categoryId: "2-wheeler-seat-cover",
+    additionalInfo: "Waterproof. UV resistant. Anti-slip bottom. Fits most sports motorcycles.",
+    inStock: true,
+    rating: 4.6
+  },
+  {
+    id: "10",
+    name: "Scooter Seat Cover - Universal",
+    price: 29.99,
+    description: "Universal scooter seat cover with superior grip and comfort. Made with breathable material and anti-slip design for optimal riding experience.",
+    images: [
+      "https://images.unsplash.com/photo-1571068316344-75bc76f77890?q=80&w=2070&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=2070&auto=format&fit=crop"
+    ],
+    categoryId: "2-wheeler-seat-cover",
+    additionalInfo: "Universal fit. Breathable material. Anti-slip design. Easy installation.",
+    inStock: true,
+    rating: 4.3
   },
   {
     id: "3",

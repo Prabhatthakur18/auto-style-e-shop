@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { getMainCategories, products } from '@/data/mockData';
-import CategoryCard from '@/components/CategoryCard';
+import CategoryGrid from '@/components/CategoryGrid';
 import ProductCard from '@/components/ProductCard';
 import { Button } from '@/components/ui/button';
 import { 
@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom';
 
 const Index = () => {
   const mainCategories = getMainCategories();
-  const featuredProducts = products.slice(0, 4); // Get first 4 products
+  const featuredProducts = products.slice(0, 6); // Get first 6 products
 
   return (
     <div className="space-y-12">
@@ -54,11 +54,7 @@ const Index = () => {
             View All <ArrowRight className="ml-2 h-4 w-4" />
           </Link>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {mainCategories.map(category => (
-            <CategoryCard key={category.id} category={category} />
-          ))}
-        </div>
+        <CategoryGrid categories={mainCategories} />
       </section>
 
       {/* Featured Products */}
@@ -72,7 +68,7 @@ const Index = () => {
         <Carousel className="w-full">
           <CarouselContent className="-ml-4">
             {featuredProducts.map(product => (
-              <CarouselItem key={product.id} className="pl-4 md:basis-1/2 lg:basis-1/4">
+              <CarouselItem key={product.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
                 <ProductCard product={product} />
               </CarouselItem>
             ))}
