@@ -86,6 +86,7 @@ const ProductPage = () => {
       <ProductDetailTabs 
         description={product.description}
         additionalInfo={product.additionalInfo}
+        reviews={product.reviews}
       />
 
       {/* Related Products */}

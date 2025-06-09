@@ -29,8 +29,15 @@ const ProductActions: React.FC<ProductActionsProps> = ({ productId, productName,
     }
   };
 
+  const handleEnquire = () => {
+    toast({
+      title: "Enquiry Sent",
+      description: "We'll get back to you soon about this product.",
+    });
+  };
+
   const handleWhatsAppShare = () => {
-    const message = `Check out this amazing product: ${productName} - ₹${price.toFixed(2)}. View more details at: ${window.location.href}`;
+    const message = `Check out this amazing product: ${productName} - $${price.toFixed(2)}. View more details at: ${window.location.href}`;
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
@@ -51,6 +58,10 @@ const ProductActions: React.FC<ProductActionsProps> = ({ productId, productName,
           Share on WhatsApp
         </Button>
       </div>
+      
+      <Button onClick={handleEnquire} variant="outline" className="w-full">
+        Enquire Now
+      </Button>
     </div>
   );
 };
