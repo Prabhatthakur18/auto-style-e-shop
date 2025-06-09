@@ -13,7 +13,7 @@ interface ContactFormData {
   name: string;
   email: string;
   phone: string;
-  message: string;
+  queries: string;
 }
 
 const ContactPage = () => {
@@ -46,7 +46,7 @@ const ContactPage = () => {
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-primary mb-4">Contact Autoform</h1>
+          <h1 className="text-4xl font-bold text-primary mb-4">Contact Autoform India</h1>
           <p className="text-lg text-muted-foreground">
             Get in touch with us for all your automotive accessory needs
           </p>
@@ -64,7 +64,7 @@ const ContactPage = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  Autoform India<br />
+                  <strong>Autoform India</strong><br />
                   123 Industrial Area<br />
                   Sector 45, Gurgaon<br />
                   Haryana - 122003<br />
@@ -97,7 +97,7 @@ const ContactPage = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  marketing@autoformindia.com<br />
+                  <strong>marketing@autoformindia.com</strong><br />
                   support@autoformindia.com
                 </p>
               </CardContent>
@@ -165,11 +165,11 @@ const ContactPage = () => {
 
                   <FormField
                     control={form.control}
-                    name="message"
-                    rules={{ required: "Message is required" }}
+                    name="queries"
+                    rules={{ required: "Please enter your queries" }}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Message</FormLabel>
+                        <FormLabel>Queries</FormLabel>
                         <FormControl>
                           <Textarea 
                             placeholder="Tell us about your requirements or any queries..."
