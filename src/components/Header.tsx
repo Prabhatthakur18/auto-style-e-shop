@@ -1,8 +1,9 @@
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { getMainCategories } from '@/data/categories';
+import { getMainCategories } from '@/data/mockData';
 import NavWishlist from './NavWishlist';
 
 const Header = () => {
