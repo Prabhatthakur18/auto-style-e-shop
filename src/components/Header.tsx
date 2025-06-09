@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Menu, X } from 'lucide-react';
-import NavCart from './NavCart';
+import NavWishlist from './NavWishlist';
 import { Button } from './ui/button';
 import { 
   DropdownMenu, 
@@ -45,8 +45,8 @@ const Header = () => {
 
           {/* Actions */}
           <div className="flex items-center space-x-4">            
-            {/* Cart */}
-            <NavCart />
+            {/* Wishlist */}
+            <NavWishlist />
             
             {/* Mobile Menu Toggle */}
             <button 
@@ -62,7 +62,7 @@ const Header = () => {
         <nav className="hidden md:flex items-center justify-between py-4">
           <ul className="flex space-x-6">
             <li>
-              <Link to="/" className="text-gray-700 hover:text-primary font-medium category-link">
+              <Link to="/" className="text-gray-700 hover:text-brand-orange font-medium transition-all duration-300 hover:scale-105">
                 Home
               </Link>
             </li>
@@ -70,7 +70,7 @@ const Header = () => {
               <li key={category.id} className="relative group">
                 <Link 
                   to={`/category/${category.id}`} 
-                  className="text-gray-700 hover:text-primary font-medium category-link"
+                  className="text-gray-700 hover:text-brand-orange font-medium transition-all duration-300 hover:scale-105"
                 >
                   {category.name}
                 </Link>
@@ -82,7 +82,7 @@ const Header = () => {
                       <Link 
                         key={subCategory.id}
                         to={`/category/${subCategory.id}`}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-accent hover:text-primary"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-brand-yellow/20 hover:text-brand-orange transition-colors duration-200"
                       >
                         {subCategory.name}
                       </Link>
@@ -92,7 +92,7 @@ const Header = () => {
               </li>
             ))}
             <li>
-              <Link to="/contact" className="text-gray-700 hover:text-primary font-medium category-link">
+              <Link to="/contact" className="text-gray-700 hover:text-brand-orange font-medium transition-all duration-300 hover:scale-105">
                 Contact
               </Link>
             </li>

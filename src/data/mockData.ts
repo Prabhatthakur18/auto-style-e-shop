@@ -1,4 +1,3 @@
-
 import { Category, Product, Review } from "../types";
 
 // Categories
@@ -6,8 +5,8 @@ export const categories: Category[] = [
   // Main Categories
   { id: "seat-cover", name: "Seat Cover", description: "Premium seat covers for all vehicles", image: "https://images.unsplash.com/photo-1617111490936-07b47eafdcd4?q=80&w=1976&auto=format&fit=crop" },
   { id: "accessories", name: "Accessories", description: "Enhance your driving experience", image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2070&auto=format&fit=crop" },
-  { id: "mat", name: "Mat", description: "High-quality mats for your vehicle", image: "https://images.unsplash.com/photo-1618333258404-f509733839c4?q=80&w=1780&auto=format&fit=crop" },
-  { id: "life-utility", name: "Life & Utility", description: "Make life easier on the road", image: "https://images.unsplash.com/photo-1489686995744-f47e995ffe61?q=80&w=2071&auto=format&fit=crop" },
+  { id: "mat", name: "Mats", description: "High-quality mats for your vehicle", image: "https://images.unsplash.com/photo-1618333258404-f509733839c4?q=80&w=1780&auto=format&fit=crop" },
+  { id: "life-utility", name: "Light & Utility", description: "Make life easier on the road", image: "https://images.unsplash.com/photo-1489686995744-f47e995ffe61?q=80&w=2071&auto=format&fit=crop" },
   { id: "audio-security", name: "Audio & Security", description: "Premium sound and safety solutions", image: "https://images.unsplash.com/photo-1558537348-c0f8e733989d?q=80&w=1978&auto=format&fit=crop" },
   { id: "care-fragrance", name: "Care & Fragrance", description: "Keep your car fresh and clean", image: "https://images.unsplash.com/photo-1527359443443-84a48aec73d2?q=80&w=2070&auto=format&fit=crop" },
   
@@ -15,20 +14,62 @@ export const categories: Category[] = [
   { id: "4-wheeler-seat-cover", name: "4 Wheeler", parentId: "seat-cover", image: "https://images.unsplash.com/photo-1605152322256-ff7c17bedd5b?q=80&w=2070&auto=format&fit=crop" },
   { id: "2-wheeler-seat-cover", name: "2 Wheeler", parentId: "seat-cover", image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=2070&auto=format&fit=crop" },
   
+  // Subcategories for the Accessories
+  { id: "4-wheeler-accessories", name: "4 Wheeler Accessories", parentId: "accessories", image: "https://images.unsplash.com/photo-1605152322256-ff7c17bedd5b?q=80&w=2070&auto=format&fit=crop" },
+  { id: "2-wheeler-accessories", name: "2 Wheeler Accessories", parentId: "accessories", image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=2070&auto=format&fit=crop" },
+
+  // Sub-Subcategories of the Accessories (4w)
+  { id: "car-body-cover", name: "Car Body Cover", parentId: "4-wheeler-accessories", image: "https://images.unsplash.com/photo-1605152322256-ff7c17bedd5b?q=80&w=2070&auto=format&fit=crop" },
+  { id: "car-cleaning-kit", name: "Cleaning Kit", parentId: "4-wheeler-accessories", image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=2070&auto=format&fit=crop" },
+  { id: "tissue-box", name: "Tissue Box", parentId: "4-wheeler-accessories", image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=2070&auto=format&fit=crop" },
+  { id: "car-comfort-accessories", name: "Car Comfort Accessories", parentId: "4-wheeler-accessories", image: "https://images.unsplash.com/photo-1605152322256-ff7c17bedd5b?q=80&w=2070&auto=format&fit=crop" },
+  { id: "padded-plus-fabric-seat-cover", name: "Padded plus fabric seat cover", parentId: "4-wheeler-accessories", image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=2070&auto=format&fit=crop" },
+  { id: "ev-accessories", name: "EV-Accessories", parentId: "4-wheeler-accessories", image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=2070&auto=format&fit=crop" },
+ 
+  // Tissue Boxes Categories
+  { id: "cup-tissue-holder", name: "Cup Tissue Holder", parentId: "tissue-box", image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=2070&auto=format&fit=crop" },
+  { id: "tissue-box-holder", name: "Tissue Box Holder", parentId: "tissue-box", image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=2070&auto=format&fit=crop" },
+
+  // Car comfort accessories
+  { id: "neck-rest", name: "Neck Rest", parentId: "car-comfort-accessories", image: "https://images.unsplash.com/photo-1605152322256-ff7c17bedd5b?q=80&w=2070&auto=format&fit=crop" },
+  { id: "cushion", name: "Cushion", parentId: "car-comfort-accessories", image: "https://images.unsplash.com/photo-1605152322256-ff7c17bedd5b?q=80&w=2070&auto=format&fit=crop" },
+  { id: "arm-rest", name: "Arm Rest", parentId: "car-comfort-accessories", image: "https://images.unsplash.com/photo-1605152322256-ff7c17bedd5b?q=80&w=2070&auto=format&fit=crop" },
+  { id: "lumber-support", name: "Lumber Support", parentId: "car-comfort-accessories", image: "https://images.unsplash.com/photo-1605152322256-ff7c17bedd5b?q=80&w=2070&auto=format&fit=crop" },
+  { id: "neck-pillow", name: "Neck Pillow", parentId: "car-comfort-accessories", image: "https://images.unsplash.com/photo-1605152322256-ff7c17bedd5b?q=80&w=2070&auto=format&fit=crop" },
+  { id: "travel-pillow", name: "Travel Pillow", parentId: "car-comfort-accessories", image: "https://images.unsplash.com/photo-1605152322256-ff7c17bedd5b?q=80&w=2070&auto=format&fit=crop" },
+
+  // Sub-sub Categories of the 2W Accessories
+  { id: "bike-scooty-body-cover", name: "Bike/Scooty Body Cover", parentId: "2-wheeler-accessories", image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=2070&auto=format&fit=crop" },
+  { id: "saddle-bag", name: "Saddle Bag", parentId: "2-wheeler-accessories", image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=2070&auto=format&fit=crop" },
+  { id: "chest-guard", name: "Chest Guard", parentId: "2-wheeler-accessories", image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=2070&auto=format&fit=crop" },
+  { id: "ropes", name: "Ropes", parentId: "2-wheeler-accessories", image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=2070&auto=format&fit=crop" },
+  { id: "back-rest-pad", name: "Back Rest Pad", parentId: "2-wheeler-accessories", image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=2070&auto=format&fit=crop" },
+  { id: "quilted-spike-mat", name: "Quilted Spike Mat", parentId: "2-wheeler-accessories", image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=2070&auto=format&fit=crop" },
+
   // Subcategories for Mat
-  { id: "2d-mat", name: "2D Mat", parentId: "mat", image: "https://images.unsplash.com/photo-1597007466934-2cf33ac13db9?q=80&w=1974&auto=format&fit=crop" },
+  { id: "2d-mat", name: "2D Mat", parentId: "mat", image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?q=80&w=2070&auto=format&fit=crop" },
   { id: "3d-mat", name: "3D Mat", parentId: "mat", image: "https://images.unsplash.com/photo-1606028638131-29913d642c04?q=80&w=1972&auto=format&fit=crop" },
   { id: "7d-mat", name: "7D Mat", parentId: "mat", image: "https://images.unsplash.com/photo-1603811478698-7e15b7d724b9?q=80&w=2070&auto=format&fit=crop" },
-  
+  { id: "7d-u-max-mat", name: "7D U max mat", parentId: "mat", image: "https://images.unsplash.com/photo-1603811478698-7e15b7d724b9?q=80&w=2070&auto=format&fit=crop" },
+
+  // subcategories for the Life and Care
+  { id: "back-seat-organiser", name: "Back Seat Organiser", parentId: "life-utility", image: "https://images.unsplash.com/photo-1489686995744-f47e995ffe61?q=80&w=2071&auto=format&fit=crop" },
+  { id: "car-coat-hanger", name: "Car Coat Hanger", parentId: "life-utility", image: "https://images.unsplash.com/photo-1489686995744-f47e995ffe61?q=80&w=2071&auto=format&fit=crop" },
+  { id: "food-tray", name: "Food Tray", parentId: "life-utility", image: "https://images.unsplash.com/photo-1489686995744-f47e995ffe61?q=80&w=2071&auto=format&fit=crop" },
+
+  // Care & Fragrance subcategories
+  { id: "ppf", name: "PPF", parentId: "care-fragrance", image: "https://images.unsplash.com/photo-1489686995744-f47e995ffe61?q=80&w=2071&auto=format&fit=crop" },
+  { id: "air-purifier", name:"Air Purifier", parentId: "care-fragrance", image: "https://images.unsplash.com/photo-1489686995744-f47e995ffe61?q=80&w=2071&auto=format&fit=crop" },
+
   // Subcategories for Audio & Security
-  { id: "android", name: "Android", parentId: "audio-security", image: "https://images.unsplash.com/photo-1662947995687-d2cbe985cd50?q=80&w=2070&auto=format&fit=crop" },
+  { id: "infotainment-system", name: "Infotainment System", parentId: "audio-security", image: "https://images.unsplash.com/photo-1662947995687-d2cbe985cd50?q=80&w=2070&auto=format&fit=crop" },
   { id: "speakers", name: "Speakers", parentId: "audio-security", image: "https://images.unsplash.com/photo-1545454675-3531b543be5d?q=80&w=2070&auto=format&fit=crop" },
   { id: "amplifiers", name: "Amplifiers", parentId: "audio-security", image: "https://images.unsplash.com/photo-1558662413-6cee6cf92bc8?q=80&w=2070&auto=format&fit=crop" },
+  { id: "enclosure", name: "Enclosure", parentId: "audio-security", image: "https://images.unsplash.com/photo-1558662413-6cee6cf92bc8?q=80&w=2070&auto=format&fit=crop" },
   
   // Subcategories for Speakers
   { id: "coaxial", name: "Coaxial", parentId: "speakers", image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?q=80&w=2069&auto=format&fit=crop" },
   { id: "component", name: "Component", parentId: "speakers", image: "https://images.unsplash.com/photo-1593305841991-05c297ba4575?q=80&w=1974&auto=format&fit=crop" },
-  { id: "enclosure", name: "Enclosure", parentId: "speakers", image: "https://images.unsplash.com/photo-1581092446327-9b52bd1abed5?q=80&w=2070&auto=format&fit=crop" },
   { id: "woofer", name: "Woofer", parentId: "speakers", image: "https://images.unsplash.com/photo-1524678714210-9917a6c619c2?q=80&w=2069&auto=format&fit=crop" },
   { id: "sub-woofer", name: "Sub Woofer", parentId: "speakers", image: "https://images.unsplash.com/photo-1590658268037-7e63493dc641?q=80&w=1939&auto=format&fit=crop" },
   { id: "mid-range", name: "Mid Range", parentId: "speakers", image: "https://images.unsplash.com/photo-1520170350707-b2da59970118?q=80&w=2065&auto=format&fit=crop" },
@@ -199,7 +240,7 @@ export const products: Product[] = [
       "https://images.unsplash.com/photo-1566939928908-0f4dbcd4e95f?q=80&w=2069&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1521657718754-6a0acce4ff5e?q=80&w=2069&auto=format&fit=crop"
     ],
-    categoryId: "accessories",
+    categoryId: "4-wheeler-accessories",
     additionalInfo: "360-degree rotation. Strong suction cup. Compatible with phones 4-7 inches wide. One-touch locking mechanism.",
     inStock: true,
     rating: 4.3,
@@ -266,7 +307,7 @@ export const products: Product[] = [
       "https://images.unsplash.com/photo-1494698853255-d0fa521abc6c?q=80&w=2070&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1581607799483-9fbe98036999?q=80&w=2070&auto=format&fit=crop"
     ],
-    categoryId: "android",
+    categoryId: "infotainment-system",
     additionalInfo: "7-inch HD touchscreen. GPS navigation. Bluetooth connectivity. USB and AUX inputs. Compatible with most vehicles.",
     inStock: true,
     rating: 4.6
