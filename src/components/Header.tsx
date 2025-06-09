@@ -1,155 +1,67 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Menu, X } from 'lucide-react';
+import { Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { getMainCategories } from '@/data/categories';
 import NavWishlist from './NavWishlist';
-import { Button } from './ui/button';
-import { 
-  DropdownMenu, 
-  DropdownMenuTrigger, 
-  DropdownMenuContent, 
-  DropdownMenuItem 
-} from './ui/dropdown-menu';
-import { categories, getMainCategories, getSubcategories } from '@/data/mockData';
 
 const Header = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
-  const [searchQuery, setSearchQuery] = React.useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const mainCategories = getMainCategories();
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Searching for:', searchTerm);
+  };
+
   return (
-    <header className="bg-white shadow-sm">
+    <header className="bg-background border-b sticky top-0 z-50">
       <div className="container mx-auto px-4">
-        {/* Top Bar */}
-        <div className="flex items-center justify-between py-4 border-b">
-          {/* Logo */}
-          <div className="flex items-center">
-            <Link to="/" className="text-2xl font-bold text-primary">
-              Autoform
-            </Link>
-          </div>
-
-          {/* Search Bar - Desktop */}
-          <div className="hidden md:flex flex-1 max-w-md mx-6">
-            <div className="relative w-full">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search for products..."
-                className="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+        {/* Top bar */}
+        <div className="flex items-center justify-between py-4">
+          <Link to="/" className="text-2xl font-bold text-primary">
+            Autoform
+          </Link>
+          
+          {/* Search bar */}
+          <form onSubmit={handleSearch} className="flex-1 max-w-md mx-8">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Input
+                type="search"
+                placeholder="Search products..."
+                className="pl-10 pr-4"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <Search className="absolute right-3 top-2.5 text-gray-400" size={18} />
             </div>
-          </div>
+          </form>
 
-          {/* Actions */}
-          <div className="flex items-center space-x-4">            
-            {/* Wishlist */}
-            <NavWishlist />
-            
-            {/* Mobile Menu Toggle */}
-            <button 
-              className="md:hidden"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          <div className="flex items-center gap-4">
+            <Link 
+              to="/contact" 
+              className="text-muted-foreground hover:text-primary transition-colors"
             >
-              {mobileMenuOpen ? <X /> : <Menu />}
-            </button>
+              Contact
+            </Link>
+            <NavWishlist />
           </div>
         </div>
 
-        {/* Main Navigation - Desktop */}
-        <nav className="hidden md:flex items-center justify-between py-4">
-          <ul className="flex space-x-6">
-            <li>
-              <Link to="/" className="text-gray-700 hover:text-brand-orange font-medium transition-all duration-300 hover:scale-105">
-                Home
+        {/* Category navigation */}
+        <nav className="py-2 border-t">
+          <div className="flex items-center space-x-8 overflow-x-auto">
+            {mainCategories.map((category) => (
+              <Link
+                key={category.id}
+                to={`/category/${category.id}`}
+                className="text-sm text-muted-foreground hover:text-primary hover:bg-accent px-3 py-2 rounded-md transition-colors whitespace-nowrap"
+              >
+                {category.name}
               </Link>
-            </li>
-            {mainCategories.map(category => (
-              <li key={category.id} className="relative group">
-                <Link 
-                  to={`/category/${category.id}`} 
-                  className="text-gray-700 hover:text-brand-orange font-medium transition-all duration-300 hover:scale-105"
-                >
-                  {category.name}
-                </Link>
-                
-                {/* Mega Menu for Categories with Subcategories */}
-                {getSubcategories(category.id).length > 0 && (
-                  <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-10">
-                    {getSubcategories(category.id).map(subCategory => (
-                      <Link 
-                        key={subCategory.id}
-                        to={`/category/${subCategory.id}`}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-brand-yellow/20 hover:text-brand-orange transition-colors duration-200"
-                      >
-                        {subCategory.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </li>
             ))}
-            <li>
-              <Link to="/contact" className="text-gray-700 hover:text-brand-orange font-medium transition-all duration-300 hover:scale-105">
-                Contact
-              </Link>
-            </li>
-          </ul>
-        </nav>
-
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t">
-            {/* Search Bar - Mobile */}
-            <div className="mb-4">
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Search for products..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                />
-                <Search className="absolute right-3 top-2.5 text-gray-400" size={18} />
-              </div>
-            </div>
-            
-            {/* Mobile Nav Links */}
-            <ul className="space-y-2">
-              <li>
-                <Link 
-                  to="/"
-                  className="block py-2 text-gray-700 hover:text-primary font-medium"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Home
-                </Link>
-              </li>
-              {mainCategories.map(category => (
-                <li key={category.id}>
-                  <Link 
-                    to={`/category/${category.id}`}
-                    className="block py-2 text-gray-700 hover:text-primary font-medium"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {category.name}
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <Link 
-                  to="/contact"
-                  className="block py-2 text-gray-700 hover:text-primary font-medium"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Contact
-                </Link>
-              </li>
-            </ul>
           </div>
-        )}
+        </nav>
       </div>
     </header>
   );

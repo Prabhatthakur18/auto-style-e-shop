@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import Layout from "./components/Layout";
 import CategoryPage from "./pages/CategoryPage";
 import ProductPage from "./pages/ProductPage";
+import ContactPage from "./pages/ContactPage";
 import { WishlistProvider } from "./context/WishlistContext";
 
 const queryClient = new QueryClient();
