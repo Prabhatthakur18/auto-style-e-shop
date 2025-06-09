@@ -5,13 +5,10 @@ import { Search, ChevronDown } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { getMainCategories, getSubcategories } from '@/data/mockData';
 import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from '@/components/ui/navigation-menu';
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import NavWishlist from './NavWishlist';
 
 const Header = () => {
@@ -59,53 +56,50 @@ const Header = () => {
 
         {/* Category navigation with dropdown */}
         <nav className="py-2 border-t">
-          <NavigationMenu>
-            <NavigationMenuList className="flex items-center space-x-8">
-              {mainCategories.map((category) => {
-                const subcategories = getSubcategories(category.id);
-                
-                if (subcategories.length > 0) {
-                  return (
-                    <NavigationMenuItem key={category.id}>
-                      <NavigationMenuTrigger className="text-sm text-muted-foreground hover:text-primary">
-                        {category.name}
-                      </NavigationMenuTrigger>
-                      <NavigationMenuContent>
-                        <div className="grid w-[400px] gap-3 p-4 bg-background border rounded-lg shadow-lg">
-                          {subcategories.map((subcategory) => (
-                            <NavigationMenuLink key={subcategory.id} asChild>
-                              <Link
-                                to={`/category/${subcategory.id}`}
-                                className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                              >
-                                <div className="text-sm font-medium leading-none">{subcategory.name}</div>
-                                {subcategory.description && (
-                                  <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                                    {subcategory.description}
-                                  </p>
-                                )}
-                              </Link>
-                            </NavigationMenuLink>
-                          ))}
-                        </div>
-                      </NavigationMenuContent>
-                    </NavigationMenuItem>
-                  );
-                } else {
-                  return (
-                    <NavigationMenuItem key={category.id}>
-                      <Link
-                        to={`/category/${category.id}`}
-                        className="text-sm text-muted-foreground hover:text-primary hover:bg-accent px-3 py-2 rounded-md transition-colors whitespace-nowrap"
-                      >
-                        {category.name}
-                      </Link>
-                    </NavigationMenuItem>
-                  );
-                }
-              })}
-            </NavigationMenuList>
-          </NavigationMenu>
+          <div className="flex items-center space-x-8">
+            {mainCategories.map((category) => {
+              const subcategories = getSubcategories(category.id);
+              
+              if (subcategories.length > 0) {
+                return (
+                  <Popover key={category.id}>
+                    <PopoverTrigger className="flex items-center text-sm text-muted-foreground hover:text-primary transition-colors cursor-pointer">
+                      {category.name}
+                      <ChevronDown className="ml-1 h-3 w-3" />
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80 p-0" align="start">
+                      <div className="grid gap-2 p-4">
+                        {subcategories.map((subcategory) => (
+                          <Link
+                            key={subcategory.id}
+                            to={`/category/${subcategory.id}`}
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground"
+                          >
+                            <div className="text-sm font-medium leading-none">{subcategory.name}</div>
+                            {subcategory.description && (
+                              <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                                {subcategory.description}
+                              </p>
+                            )}
+                          </Link>
+                        ))}
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                );
+              } else {
+                return (
+                  <Link
+                    key={category.id}
+                    to={`/category/${category.id}`}
+                    className="text-sm text-muted-foreground hover:text-primary hover:bg-accent px-3 py-2 rounded-md transition-colors whitespace-nowrap"
+                  >
+                    {category.name}
+                  </Link>
+                );
+              }
+            })}
+          </div>
         </nav>
       </div>
     </header>
