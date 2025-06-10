@@ -13,6 +13,7 @@ import BulkUploadDialog from '@/components/admin/BulkUploadDialog';
 interface Product {
   id: string;
   name: string;
+  description: string;
   price: number;
   stock: number;
   category_id: string;
