@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { getMainCategories, products } from '@/data/mockData';
+import { useCategories } from '@/hooks/useSupabaseData';
+import { getAllProducts } from '@/data/supabaseData';
 import CategoryGrid from '@/components/CategoryGrid';
 import ProductCard from '@/components/ProductCard';
 import { Button } from '@/components/ui/button';
@@ -14,8 +15,39 @@ import { ArrowRight, Check, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Index = () => {
+  const { getMainCategories, loading: categoriesLoading } = useCategories();
+  const [products, setProducts] = useState([]);
+  const [productsLoading, setProductsLoading] = useState(true);
+
   const mainCategories = getMainCategories();
-  const featuredProducts = products.slice(0, 6);
+  
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setProductsLoading(true);
+      try {
+        const allProducts = await getAllProducts();
+        const transformedProducts = allProducts.slice(0, 6).map(product => ({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          description: product.description || '',
+          images: Array.isArray(product.images) ? product.images : [],
+          categoryId: product.category_id || '',
+          additionalInfo: JSON.stringify(product.additional_info || {}),
+          inStock: product.in_stock,
+          rating: product.rating || 0,
+          reviews: []
+        }));
+        setProducts(transformedProducts);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      } finally {
+        setProductsLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const carouselContent = [
     {
@@ -95,6 +127,17 @@ const Index = () => {
     if (index === currentSlide) return; // Don't animate if same slide
     handleSlideChange(() => index);
   }, [currentSlide, handleSlideChange]);
+
+  if (categoriesLoading || productsLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-12">
@@ -196,11 +239,6 @@ const Index = () => {
                   filter: isTransitioning ? 'blur(1px) contrast(0.8)' : 'blur(0px) contrast(1)'
                 }}
               >
-                <Link to="/category/seat-cover">
-                  {/* <Button className="bg-white text-primary hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:-translate-y-1">
-                    Shop Now
-                  </Button> */}
-                </Link>
                 <a 
                   href="https://www.autoformindia.com/" 
                   target="_blank" 
@@ -235,17 +273,23 @@ const Index = () => {
             View All <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
-        <Carousel className="w-full">
-          <CarouselContent className="-ml-4">
-            {featuredProducts.map((product) => (
-              <CarouselItem key={product.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
-                <ProductCard product={product} />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="-left-4 md:-left-5" />
-          <CarouselNext className="-right-4 md:-right-5" />
-        </Carousel>
+        {products.length > 0 ? (
+          <Carousel className="w-full">
+            <CarouselContent className="-ml-4">
+              {products.map((product) => (
+                <CarouselItem key={product.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                  <ProductCard product={product} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="-left-4 md:-left-5" />
+            <CarouselNext className="-right-4 md:-right-5" />
+          </Carousel>
+        ) : (
+          <div className="text-center py-8">
+            <p className="text-gray-600">No products available at the moment.</p>
+          </div>
+        )}
       </section>
 
       {/* Why Choose Us */}

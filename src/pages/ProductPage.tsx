@@ -1,8 +1,6 @@
-
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { getProduct, getRelatedProducts } from '@/data/mockData';
-import { categories } from '@/data/mockData';
+import { useProduct, useCategories, useRelatedProducts } from '@/hooks/useSupabaseData';
 
 import ProductBreadcrumbs from '@/components/product/ProductBreadcrumbs';
 import ProductImageGallery from '@/components/product/ProductImageGallery';
@@ -13,83 +11,140 @@ import RelatedProducts from '@/components/product/RelatedProducts';
 
 const ProductPage = () => {
   const { productId } = useParams<{ productId: string }>();
-  const product = productId ? getProduct(productId) : undefined;
+  const { product, loading: productLoading } = useProduct(productId || '');
+  const { getCategoryById } = useCategories();
+  const { products: relatedProducts } = useRelatedProducts(
+    productId || '', 
+    product?.category_id || '', 
+    4
+  );
   
+  if (productLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p>Loading product...</p>
+        </div>
+      </div>
+    );
+  }
+
   if (!product) {
     return <div className="text-center py-12">Product not found</div>;
   }
 
   // Find the product's category
-  const category = categories.find(cat => cat.id === product.categoryId);
+  const category = product.category_id ? getCategoryById(product.category_id) : null;
   
   // Find parent category if this is a subcategory
-  const parentCategory = category?.parentId 
-    ? categories.find(cat => cat.id === category.parentId) 
-    : null;
+  const parentCategory = category?.parent_id ? getCategoryById(category.parent_id) : null;
 
-  // Get related products
-  const relatedProducts = productId ? getRelatedProducts(productId, 4) : [];
+  // Transform product to match expected interface
+  const transformedProduct = {
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    description: product.description || '',
+    images: Array.isArray(product.images) ? product.images : [],
+    categoryId: product.category_id || '',
+    additionalInfo: JSON.stringify(product.additional_info || {}),
+    inStock: product.in_stock,
+    rating: product.rating || 0,
+    reviews: [] // Reviews will be loaded separately if needed
+  };
+
+  // Transform related products
+  const transformedRelatedProducts = relatedProducts.map(relatedProduct => ({
+    id: relatedProduct.id,
+    name: relatedProduct.name,
+    price: relatedProduct.price,
+    description: relatedProduct.description || '',
+    images: Array.isArray(relatedProduct.images) ? relatedProduct.images : [],
+    categoryId: relatedProduct.category_id || '',
+    additionalInfo: JSON.stringify(relatedProduct.additional_info || {}),
+    inStock: relatedProduct.in_stock,
+    rating: relatedProduct.rating || 0,
+    reviews: []
+  }));
+
+  // Transform categories for breadcrumbs
+  const transformedCategory = category ? {
+    id: category.id,
+    name: category.name,
+    description: category.description || undefined,
+    image: category.image || undefined,
+    parentId: category.parent_id || undefined
+  } : undefined;
+
+  const transformedParentCategory = parentCategory ? {
+    id: parentCategory.id,
+    name: parentCategory.name,
+    description: parentCategory.description || undefined,
+    image: parentCategory.image || undefined,
+    parentId: parentCategory.parent_id || undefined
+  } : null;
 
   return (
     <div className="space-y-8">
       {/* Breadcrumbs */}
       <ProductBreadcrumbs 
-        productName={product.name}
-        category={category}
-        parentCategory={parentCategory}
+        productName={transformedProduct.name}
+        category={transformedCategory}
+        parentCategory={transformedParentCategory}
       />
 
       {/* Product Display */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Product Images */}
         <ProductImageGallery 
-          images={product.images} 
-          productName={product.name} 
+          images={transformedProduct.images} 
+          productName={transformedProduct.name} 
         />
 
         {/* Product Info */}
         <div>
-          <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
+          <h1 className="text-3xl font-bold mb-2">{transformedProduct.name}</h1>
           
           {/* Rating */}
           <div className="mb-4">
             <ProductRating 
-              rating={product.rating} 
-              reviewCount={product.reviews?.length || 0} 
+              rating={transformedProduct.rating} 
+              reviewCount={0} // Will be updated when reviews are implemented
             />
           </div>
           
-          <p className="text-2xl font-bold text-primary mb-4">${product.price.toFixed(2)}</p>
+          <p className="text-2xl font-bold text-primary mb-4">${transformedProduct.price.toFixed(2)}</p>
           
           <div className="prose mb-6">
-            <p>{product.description}</p>
+            <p>{transformedProduct.description}</p>
           </div>
 
           {/* Stock status */}
           <div className="mb-6">
-            <span className={`px-2 py-1 text-sm rounded-full ${product.inStock ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-              {product.inStock ? 'In Stock' : 'Out of Stock'}
+            <span className={`px-2 py-1 text-sm rounded-full ${transformedProduct.inStock ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+              {transformedProduct.inStock ? 'In Stock' : 'Out of Stock'}
             </span>
           </div>
 
           {/* Product actions */}
           <ProductActions 
-            productId={product.id} 
-            productName={product.name}
-            price={product.price}
-            inStock={product.inStock} 
+            productId={transformedProduct.id} 
+            productName={transformedProduct.name}
+            price={transformedProduct.price}
+            inStock={transformedProduct.inStock} 
           />
         </div>
       </div>
 
       {/* Product Details Tabs */}
       <ProductDetailTabs 
-        description={product.description}
-        additionalInfo={product.additionalInfo}
+        description={transformedProduct.description}
+        additionalInfo={transformedProduct.additionalInfo}
       />
 
       {/* Related Products */}
-      <RelatedProducts products={relatedProducts} />
+      <RelatedProducts products={transformedRelatedProducts} />
     </div>
   );
 };
