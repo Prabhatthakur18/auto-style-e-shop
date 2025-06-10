@@ -7,6 +7,7 @@ export interface AdminProduct {
   stock: number;
   category_id: string;
   images: string[];
+  additional_info?: any;
 }
 
 export interface AdminCategory {
