@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import Layout from "./components/Layout";
 import CategoryPage from "./pages/CategoryPage";
 import ProductPage from "./pages/ProductPage";
+import ContactPage from "./pages/ContactPage";
 import { WishlistProvider } from "./context/WishlistContext";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
             <Route path="/" element={<Layout><Index /></Layout>} />
             <Route path="/category/:categoryId" element={<Layout><CategoryPage /></Layout>} />
             <Route path="/product/:productId" element={<Layout><ProductPage /></Layout>} />
+            <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -60,6 +60,7 @@ export const categories: Category[] = [
   // Care & Fragrance subcategories
   { id: "ppf", name: "PPF", parentId: "care-fragrance", image: "https://images.unsplash.com/photo-1489686995744-f47e995ffe61?q=80&w=2071&auto=format&fit=crop" },
   { id: "air-purifier", name:"Air Purifier", parentId: "care-fragrance", image: "https://images.unsplash.com/photo-1489686995744-f47e995ffe61?q=80&w=2071&auto=format&fit=crop" },
+  { id: "perfume", name:"Perfume", parentId: "care-fragrance", image: "https://images.unsplash.com/photo-1489686995744-f47e995ffe61?q=80&w=2071&auto=format&fit=crop" },
 
   // Subcategories for Audio & Security
   { id: "infotainment-system", name: "Infotainment System", parentId: "audio-security", image: "https://images.unsplash.com/photo-1662947995687-d2cbe985cd50?q=80&w=2070&auto=format&fit=crop" },
