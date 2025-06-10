@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { createProduct, updateProduct, getCategories, uploadImage } from '@/services/adminApi';
+import { AdminProduct, AdminCategory } from '@/types/admin';
 
 interface Product {
   id: string;
@@ -28,7 +28,7 @@ interface Category {
 interface ProductFormDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  product: Product | null;
+  product: AdminProduct | null;
   onSuccess: () => void;
 }
 
@@ -42,7 +42,7 @@ const ProductFormDialog = ({ isOpen, onClose, product, onSuccess }: ProductFormD
     images: [] as string[],
     additional_info: '',
   });
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<AdminCategory[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [imageFiles, setImageFiles] = useState<FileList | null>(null);
   const { toast } = useToast();
